@@ -1,0 +1,47 @@
+# Work on this it is not working 
+ui:
+  image: portainer/portainer:arm
+  restart: always
+  volumes:
+    - '/var/run/docker.sock:/var/run/docker.sock'
+  expose:
+    - 9000
+  ports:
+    - 9000:9000
+
+btsync:
+  image: resilio/sync
+  restart: always
+  volumes:
+    - '/home/joe/mnt/sync/sync:/mnt/sync'
+    - '/home/joe/mnt/sync/home:/mnt/mounted_folders/home'
+    - '/home/joe/mnt/sync/backup:/mnt/mounted_folders/backup'
+    - '/home/joe/mnt/sync/it:/mnt/mounted_folders/it'
+  expose:
+    - 8888
+    - 55555
+  ports:
+    - 8888:8888
+    - 55555:55555
+
+piHole:
+  image: diginc/pi-hole:arm
+  container_name: piHole
+  restart: always
+  ports:
+    - "53:53/tcp"
+    - "53:53/udp"
+    - "80:80/tcp"
+  cap_add:
+    - NET_ADMIN
+  environment:
+    - ServerIP=10.1.1.180
+    - DNS1=8.8.8.8
+    - DNS2=8.8.4.4
+  extra_hosts:
+    - 'pihole.yourdomain.local: 10.1.1.180'
+  volumes:
+    - '/etc/pihole/:/etc/pihole/'
+    - '/var/log/pihole.log:/var/log/pihole.log'
+
+

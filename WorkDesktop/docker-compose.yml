@@ -1,0 +1,63 @@
+ui:
+    image: portainer/portainer
+    restart: always
+    volumes:
+        - '/var/run/docker.sock:/var/run/docker.sock'
+    expose:
+        - 9000
+    ports:
+        - 9000:9000
+
+syncthing:
+    image: linuxserver/syncthing
+    restart: always
+    volumes:
+         - '/opt/docker/syncthing/sync:/mnt/sync'
+         - '/opt/docker/syncthing/home:/mnt/home'
+         - '/opt/docker/syncthing/backup:/mnt/backup'
+         - '/opt/docker/syncthing/it:/mnt/it'
+         - '/opt/docker/syncthing/config:/config'
+         - '/opt/docker/syncthing/phone:/mnt/phone'
+    ports:
+        - 22000:22000  
+        - 21027:21027/udp
+        - 8384:8384
+    environment:
+        - PGID=1000
+        - PUID=1000
+
+
+# btsync:
+#     image: resilio/sync
+#     restart: always
+#     volumes:
+#         - '/opt/sync/sync:/mnt/sync'
+#         - '/opt/sync/home:/mnt/mounted_folders/home'
+#         - '/opt/sync/backup:/mnt/mounted_folders/backup'
+#         - '/opt/sync/it:/mnt/mounted_folders/it'
+#     expose:
+#         - 8888
+#         - 55555
+#     ports:
+#         - 8888:8888
+#         - 55555:55555
+
+#piHole:
+#    image: diginc/pi-hole:debian
+#    container_name: piHole
+##    restart: always
+#    ports:
+#        - "53:53/tcp"
+#        - "53:53/udp"
+#        - "80:80/tcp"
+#    cap_add:
+#        - NET_ADMIN
+#    environment:
+#        - ServerIP=192.168.99.200
+#        - DNS1=8.8.8.8
+#        - DNS2=8.8.4.4
+#    extra_hosts:
+#        - 'pihole.library.wpl.lib.in.us: 192.168.99.200'
+#    volumes:
+#        - '/etc/pihole/:/etc/pihole/'
+#        - '/var/log/pihole.log:/var/log/pihole.log'
